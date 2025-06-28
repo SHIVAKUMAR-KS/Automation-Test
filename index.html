@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Parent Control - Multi Profile</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 40px;
+      background-color: #f0f2f5;
+    }
+    .container {
+      background: white;
+      padding: 30px;
+      max-width: 600px;
+      margin: auto;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+    }
+    .profile-block {
+      border: 1px solid #ccc;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+    input[type="text"], select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 6px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .toggle-container {
+      display: flex;
+      align-items: center;
+      margin-top: 10px;
+    }
+    .dropdownSection {
+      display: none;
+      margin-top: 10px;
+    }
+    #saveBtn {
+      width: 100%;
+      padding: 12px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    #saveBtn:hover {
+      background-color: #0056b3;
+    }
+
+    /* Toggle Switch Styling */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 46px;
+      height: 24px;
+      margin-right: 10px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0;
+      right: 0; bottom: 0;
+      background-color: #ccc;
+      transition: .3s;
+      border-radius: 24px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .3s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: #4caf50;
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(22px);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Parent Control Settings</h2>
+
+    <div class="profile-block" data-profile="Kid1">
+      <h3>Kid 1</h3>
+      <label>Enter PIN</label>
+      <input type="text" class="pinInput" placeholder="Enter PIN for Kid 1">
+
+      <div class="toggle-container">
+        <label class="switch">
+          <input type="checkbox" class="toggleControl">
+          <span class="slider round"></span>
+        </label>
+        <span>Enable Control</span>
+      </div>
+
+      <div class="dropdownSection">
+        <label>Select Restriction Level</label>
+        <select class="profileDropdown">
+          <option value="">-- Select --</option>
+          <option value="basic">Basic</option>
+          <option value="medium">Medium</option>
+          <option value="strict">Strict</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="profile-block" data-profile="Kid2">
+      <h3>Kid 2</h3>
+      <label>Enter PIN</label>
+      <input type="text" class="pinInput" placeholder="Enter PIN for Kid 2">
+
+      <div class="toggle-container">
+        <label class="switch">
+          <input type="checkbox" class="toggleControl">
+          <span class="slider round"></span>
+        </label>
+        <span>Enable Control</span>
+      </div>
+
+      <div class="dropdownSection">
+        <label>Select Restriction Level</label>
+        <select class="profileDropdown">
+          <option value="">-- Select --</option>
+          <option value="basic">Basic</option>
+          <option value="medium">Medium</option>
+          <option value="strict">Strict</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="profile-block" data-profile="Teen">
+      <h3>Teen</h3>
+      <label>Enter PIN</label>
+      <input type="text" class="pinInput" placeholder="Enter PIN for Teen">
+
+      <div class="toggle-container">
+        <label class="switch">
+          <input type="checkbox" class="toggleControl">
+          <span class="slider round"></span>
+        </label>
+        <span>Enable Control</span>
+      </div>
+
+      <div class="dropdownSection">
+        <label>Select Restriction Level</label>
+        <select class="profileDropdown">
+          <option value="">-- Select --</option>
+          <option value="mild">Mild</option>
+          <option value="balanced">Balanced</option>
+          <option value="strong">Strong</option>
+        </select>
+      </div>
+    </div>
+
+    <button id="saveBtn">Save All Settings</button>
+  </div>
+
+  <script>
+    const blocks = document.querySelectorAll('.profile-block');
+
+    blocks.forEach(block => {
+      const toggle = block.querySelector('.toggleControl');
+      const dropdownSection = block.querySelector('.dropdownSection');
+
+      toggle.addEventListener('change', () => {
+        dropdownSection.style.display = toggle.checked ? 'block' : 'none';
+      });
+    });
+
+    document.getElementById('saveBtn').addEventListener('click', () => {
+      const settings = [];
+
+      blocks.forEach(block => {
+        const profile = block.getAttribute('data-profile');
+        const pin = block.querySelector('.pinInput').value;
+        const enabled = block.querySelector('.toggleControl').checked;
+        const dropdown = block.querySelector('.profileDropdown').value;
+
+        settings.push({
+          profile,
+          pin,
+          enabled,
+          restrictionLevel: enabled ? dropdown : null
+        });
+      });
+
+      console.log("Collected Settings:");
+      console.table(settings);
+
+      alert("Settings saved successfully! Check console for data.");
+    });
+  </script>
+</body>
+</html>
